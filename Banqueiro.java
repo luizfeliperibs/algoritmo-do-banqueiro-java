@@ -1,6 +1,6 @@
 import java.util.Random;
 
-public class Banqueiro {
+public class BankersAlgorithm {
 
     static final int NUMBER_OF_CUSTOMERS = 5;
     static final int NUMBER_OF_RESOURCES = 3;
@@ -11,6 +11,40 @@ public class Banqueiro {
     static final int[][] need       = new int[NUMBER_OF_CUSTOMERS][NUMBER_OF_RESOURCES];
 
     static final Random random = new Random();
+
+    
+    // Algoritmo de segurança — verifica se o sistema está em estado seguro
+  
+    static boolean isSafeState() {
+        int[] work = available.clone();
+        boolean[] finish = new boolean[NUMBER_OF_CUSTOMERS];
+
+        boolean found;
+        do {
+            found = false;
+            for (int i = 0; i < NUMBER_OF_CUSTOMERS; i++) {
+                if (!finish[i] && needFitsWork(i, work)) {
+                    for (int j = 0; j < NUMBER_OF_RESOURCES; j++) {
+                        work[j] += allocation[i][j];
+                    }
+                    finish[i] = true;
+                    found = true;
+                }
+            }
+        } while (found);
+
+        for (boolean f : finish) {
+            if (!f) return false;
+        }
+        return true;
+    }
+
+    static boolean needFitsWork(int customer, int[] work) {
+        for (int j = 0; j < NUMBER_OF_RESOURCES; j++) {
+            if (need[customer][j] > work[j]) return false;
+        }
+        return true;
+    }
 
     static void printState() {
         System.out.println("  Disponível : " + arrayToString(available));
@@ -41,13 +75,10 @@ public class Banqueiro {
             System.exit(1);
         }
 
-        // Inicializa recursos disponíveis a partir dos argumentos da linha de comando
         for (int j = 0; j < NUMBER_OF_RESOURCES; j++) {
             available[j] = Integer.parseInt(args[j]);
         }
 
-        // Inicializa maximum com valores aleatórios entre 1 e available[j]
-        // need começa igual ao maximum pois a alocação inicial é zero
         for (int i = 0; i < NUMBER_OF_CUSTOMERS; i++) {
             for (int j = 0; j < NUMBER_OF_RESOURCES; j++) {
                 maximum[i][j] = 1 + random.nextInt(available[j]);
@@ -56,15 +87,13 @@ public class Banqueiro {
         }
 
         System.out.println("=== Algoritmo do Banqueiro ===");
-        System.out.println("Clientes  : " + NUMBER_OF_CUSTOMERS);
-        System.out.println("Recursos  : " + NUMBER_OF_RESOURCES);
         System.out.println("Disponível: " + arrayToString(available));
         System.out.print("Maximum   : ");
         for (int i = 0; i < NUMBER_OF_CUSTOMERS; i++)
             System.out.print("C" + i + ":" + arrayToString(maximum[i]) + " ");
         System.out.println();
 
-        System.out.println("\n=== Estado inicial ===");
+        System.out.println("\nSistema em estado seguro? " + isSafeState());
         printState();
     }
 }
