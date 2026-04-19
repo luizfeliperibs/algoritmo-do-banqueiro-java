@@ -81,7 +81,8 @@ java AlgoritmoDoBanqueiro 10 5 7
 
 ---
 
-## 🚀 Autor
+## 🚀 Autores
+
+Gabriel de Souza Aredes
 
 Luiz Felipe Ribeiro Souza
-Gabriel de Souza Aredes
