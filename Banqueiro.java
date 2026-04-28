@@ -1,7 +1,7 @@
 import java.util.Random;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class BankersAlgorithm {
+public class Banqueiro {
 
     static final int NUMBER_OF_CUSTOMERS = 5;
     static final int NUMBER_OF_RESOURCES = 3;
